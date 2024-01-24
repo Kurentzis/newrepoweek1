@@ -3,4 +3,210 @@
 *:before,
 *:after {
   box-sizing: border-box;
+  font-family: sans-serif;
+}
+ul{
+  padding: 0px;
+}
+html{
+  background-image: url('../images/site/small_check.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+body {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 100%;
+}
+
+h1 {
+  font-size: 40px;
+}
+#wrapper {
+  width: 100%;
+  background-color: white;
+  border: 5px solid rgb(34, 196, 224);
+  border-radius: 10px;
+  padding: 10px;
+  height: 100%;
+  display: block;
+}
+
+
+#top-header {
+  width: inherit;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-around; */
+}
+
+.siteName {
+  align-self: flex-start;
+}
+
+#tools{
+  margin-right: 20px;
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.siteName > a {
+  font-size: 45px;
+  font-weight:700;
+  font-family: 'Courier New', Courier, monospace;
+  color: rgb(27, 26, 26);
+  text-decoration: none;
+}
+
+#tools > a{
+  font-family: 'Courier New', Courier, monospace;
+  color: rgb(27, 26, 26);
+  text-decoration: none;
+}
+
+#navigation {
+  max-width: 950px;
+  margin: 0 auto;
+  background-color: rgb(27, 26, 26);
+}
+
+#navigation ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#navigation ul li{
+  list-style: none;
+  color: whitesmoke;
+  font-size: 20px;
+  margin: 5px;
+}
+
+
+/* =============Body styles ==================*/
+main {
+  width: 100%;
+  margin-left: 10px;
+}
+
+#mainContent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  min-height: 350px;
+}
+
+#titleContent {
+  max-width: inherit;
+  background-image: url('../images/vehicles/delorean.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 400px;
+}
+
+#dmc {
+  background-color: rgba(255, 255, 255, 0.8);
+  max-width: 200px;
+  margin-left: 80px;
+  margin-top: 100px;
+}
+
+#dmc h2 {
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: rgb(34, 196, 224);
+  margin: 0px;
+}
+#dmc p {
+  color: rgb(34, 196, 224);
+  margin: 2px;
+}
+
+#dmc img {
+  margin-top: 10px;
+  width: 150px;
+  
+}
+#dmc_btn {
+  opacity: 1;
+}
+
+
+#upgrades {
+  min-height: 300px;
+  margin-bottom: 30px;
+}
+#reviews {
+  height: 300px;
+  max-width: 100%;
+  margin-bottom: 30px;
+}
+#reviews_list{
+  height: inherit;
+}
+
+
+.items_holder {
+  max-width: 350px;
+  display: flex;
+  flex-wrap: wrap ;
+  gap: 10px;
+}
+
+.upgradeItem {
+  margin-bottom: 20px;
+}
+
+.imageContainer {
+  width: 150px;
+  height: 100px;
+  
+  background-color: rgb(34, 196, 224);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+}
+
+#reviews_list ul{
+  display: flex;
+  flex-direction:  column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: 250px;
+  padding: 20px;
+}
+
+footer {
+  padding-left: 10px;
+}
+
+@media (max-width: 540px) {
+  #dmc {
+    margin-left: 0px;
+  }
+
+  #mainContent{
+    flex-direction: column-reverse;
+  }
+
+  footer {
+    margin-left: 10px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .siteName > a {
+    font-size: 30px;
+  }
 }
