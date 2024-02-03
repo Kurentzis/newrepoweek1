@@ -11,7 +11,7 @@ Util.getNav = async function(req, res, next) {
     data.rows.forEach((row) => {
         list += "<li>"
         list +=
-            '<a href="/inv/type/' +
+            '<a href="/inventory/type/' +
             row.classification_id +
             '" title = "See our inventory of ' +
             row.classification_name +
@@ -35,7 +35,7 @@ Util.buildClassificationGrid = async function(data) {
         grid = '<ul id="inv-display">'
         data.forEach(vehicle => {
             grid += '<li>'
-            grid += '<a href = "../../inv/detail/' + vehicle.inv_id
+            grid += '<a href = "../../inventory/detail/' + vehicle.inv_id
             +'" title="View ' + vehicle.inv_make + ' ' + vehicle.inv_model
             + 'details"><img src= "' + vehicle.inv_thumbnail
             + '" alt= "Image of ' + vehicle.inv_make + ' ' + vehicle.inv_model
@@ -43,7 +43,7 @@ Util.buildClassificationGrid = async function(data) {
             grid += '<div class="namePrice">'
             grid += '<hr />'
             grid += '<h2>'
-            grid += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View '
+            grid += '<a href="../../inventory/detail/' + vehicle.inv_id + '" title="View '
             + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">'
             + vehicle.inv_make + ' ' + vehicle.inv_model + ' </a>'
             grid += '</h2>'
@@ -88,6 +88,97 @@ Util.buildItemGrid = async function(data){
 }
 
 
+Util.buildLoginGrid = async function(){
+    let grid
+
+    grid = `<div class="form-container">
+        <form id="loginForm" action="/account/login" method="post">
+            <div class="form-group">
+                <label for="account_email">Email:</label>
+                <input type="email" id="account_email" name="account_email" required>
+            </div>
+            <div class="form-group">
+                <label for="account_password">Password:</label>
+                <input type="password" id="account_password" name="account_password" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="LOGIN">
+            </div>
+            <div class="link-container"><a href="/account/register" title="Sign up?"> No account? <b>Sign-up</b></a></div>
+        </form>
+    </div>`
+
+    
+    return grid
+}
+
+Util.buildRegisterGrid = async function() {
+    let grid
+
+    grid = `<div class="form-container">
+                <form action="/account/register" method="post">
+                    <div class="form-group">
+                        <label for="account_firstname">First name:</label>
+                        <input type="text" id="account_firstname" name="account_firstname" required value="<%= locals.account_firstname %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="account_lastname">Last name:</label>
+                        <input type="text" id="account_lastname" name="account_lastname" required value="<%= locals.account_lastname %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="account_email">Email:</label>
+                        <input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="account_password">Password:</label>
+                        <input type="password" id="account_password" name="account_password" minlength="12" 
+                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+                        title="Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="submit" value="Register">
+                    </div>
+                    <span id='shwPrdBtn' onclick="shwPass(this)">Show password</span>
+                </form>
+            </div>`
+
+    
+    return grid
+}
+
+
+Util.buildManagementView = async function() {
+    let grid
+    console.log("utils")
+    grid = `<ul>
+                <li><a href="/inv/add-classification/">Add a new classification</a></li>
+                <li><a href="/newClassItem">Add new Item</a></li>
+            </ul>`
+
+    return grid
+}
+
+
+
+
+Util.getClassificationSelect = async function() {
+    let data = await invModel.getClassifications()
+    let select
+    select = '<div>'
+    data.rows.forEach((row) => {
+        select += `<option value="${row.classification_id}">${row.classification_name}</option>`
+    })
+    select += '</div>'
+
+    return select
+}
+
+Util.getClasses = async function() {
+    let data = await invModel.getClassifications()
+
+    return data
+}
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
