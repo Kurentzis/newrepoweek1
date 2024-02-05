@@ -39,7 +39,7 @@ validate.checkClassData = async (req, res, next) => {
     next()
   }
   
-  module.exports = validate
+
 
 
 
@@ -50,6 +50,7 @@ validate.checkClassData = async (req, res, next) => {
 validate.itemRules = () => {
   return [
       //firstname is required and muist be string
+      
       body("classification_id")
           .notEmpty()
           .withMessage("Please select a classification."),
@@ -92,10 +93,11 @@ validate.itemRules = () => {
           .custom(value => /^\d{4}$/.test(value)),
 
       body("inv_miles")
-          .trim()
-          .isLength({min: 1})
-          .withMessage("Only digits.")
-          .custom(value => /^\d*\//.test(value)),
+        .trim()
+        .isLength({ min: 1 })
+        .withMessage("Miles field cannot be empty.")
+        .custom(value => /^\d+$/.test(value))
+        .withMessage("Miles must contain only digits."),
 
       body("inv_color")
           .trim()
@@ -109,11 +111,14 @@ validate.itemRules = () => {
  * ***************************** */
 
 validate.checkItemData = async (req, res, next) => {
+  debugger
   const { classification_id,  inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color } = req.body
   let errors = []
   let select = await utilities.getClassificationSelect()
   let options = await utilities.getClasses()
   errors = validationResult(req)
+  // console.log(req)
+  console.log(res)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
     res.render("inventory/addNewItem", {

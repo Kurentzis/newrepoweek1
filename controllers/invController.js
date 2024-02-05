@@ -2,7 +2,6 @@ const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
 
 const invCont = {}
-debugger
 /* ***************************
  *  Build inventory by classification view
  * ************************** */
