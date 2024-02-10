@@ -17,8 +17,8 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 router.get("/detail/:itemId", utilities.handleErrors(invController.buildByItemId));
 
 // Route to build management page
+router.get("/inventory", utilities.checkAdminAuthorization, utilities.handleErrors(invController.buildManagement))
 router.get("/", utilities.checkAdminAuthorization, utilities.handleErrors(invController.buildManagement))
-
 // Route to build add classification
 router.get("/addClassification", utilities.handleErrors(invController.buildNewClass))
 

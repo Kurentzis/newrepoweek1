@@ -11,6 +11,8 @@ router.get("/logout", utilities.handleErrors(accountController.logOut))
 
 router.get('/register', utilities.handleErrors(accountController.buildRegistration))
 
+// router.get("/", utilities.checkAdminAuthorization, utilities.handleErrors(invController.buildManagement))
+
 
 router.post('/register',
             regValidate.registrationRules(),

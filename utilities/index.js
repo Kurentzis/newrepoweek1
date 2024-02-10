@@ -222,13 +222,14 @@ Util.checkJWTToken = (req, res, next) => {
 Util.checkAdminAuthorization = (req, res, next) => {
     if (req.cookies.jwt) {
         jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, function (err, accountData) {
+            console.log(accountData.account_type)
             if (err) {
                 console.log(err)
             } else {
-                if (accountData.account_type === 'Admin') {
+                if (accountData.account_type === 'Admin' || accountData.account_type === 'Employee') {
                     next(); 
                 } else {
-                    req.flash("notice", "Please log in as admin");
+                    req.flash("notice", "Please log in as admin or employee");
                     res.clearCookie("jwt");
                     res.locals.loggedIn = 0;
                     return res.redirect("/account/login");
@@ -237,7 +238,7 @@ Util.checkAdminAuthorization = (req, res, next) => {
         });
     } 
     else {
-        req.flash("notice", "Please log in as admin");
+        req.flash("notice", "Please log in as admin or employee");
         res.clearCookie("jwt");
         res.locals.loggedIn = 0;
         return res.redirect("/account/login");
@@ -259,30 +260,30 @@ Util.checkLogin = (req, res, next) => {
 }
 
 
-Util.checkAdminAuthorization = (req, res, next) => {
-    if (req.cookies.jwt) {
-        jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, function (err, accountData) {
-            if (err) {
-                console.log(err)
-            } else {
-                if (accountData.account_type === 'Admin') {
-                    next(); 
-                } else {
-                    req.flash("notice", "Please log in as admin");
-                    res.clearCookie("jwt");
-                    res.locals.loggedIn = 0;
-                    return res.redirect("/account/login");
-                }
-            }
-        });
-    } 
-    else {
-        req.flash("notice", "Please log in as admin");
-        res.clearCookie("jwt");
-        res.locals.loggedIn = 0;
-        return res.redirect("/account/login");
-    }
+// Util.checkAdminAuthorization = (req, res, next) => {
+//     if (req.cookies.jwt) {
+//         jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, function (err, accountData) {
+//             if (err) {
+//                 console.log(err)
+//             } else {
+//                 if (accountData.account_type === 'Admin' || accountData.account_type === 'Employee') {
+//                     next(); 
+//                 } else {
+//                     req.flash("notice", "Please log in as admin");
+//                     res.clearCookie("jwt");
+//                     res.locals.loggedIn = 0;
+//                     return res.redirect("/account/login");
+//                 }
+//             }
+//         });
+//     } 
+//     else {
+//         req.flash("notice", "Please log in as admin");
+//         res.clearCookie("jwt");
+//         res.locals.loggedIn = 0;
+//         return res.redirect("/account/login");
+//     }
 
-}
+// }
 
 module.exports = Util
