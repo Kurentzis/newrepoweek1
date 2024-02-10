@@ -5,6 +5,10 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
+
+a {
+  text-decoration: none;
+}
 ul{
   padding: 0px;
 }
@@ -297,7 +301,8 @@ input[type="text"],
 select[type="select"],
 textarea[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+#classificationList {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -331,7 +336,7 @@ input[type="password"]:invalid {
   background-color: rgb(253, 166, 156);
 }
 
-input[type="submit"] {
+input[type="submit"] , #shwPrdBtn {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -357,6 +362,23 @@ input[type="submit"]:hover {
 }
 
 
+.notice {
+  color: rgb(250, 0, 0) ;
+}
+
+#tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: max-content;
+  gap: 5px;
+}
+#tools a {
+  font-weight: 700;
+  font-size: 16px;
+  display: block;
+}
+
 @media (max-width: 724px) {
   /* Item detail */
 
@@ -379,6 +401,29 @@ input[type="submit"]:hover {
 
 }
 
+#inventoryDisplay {
+  margin: 10px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #f2f2f2; 
+  color: #333; 
+  padding: 12px; 
+  text-align: left; 
+  border-bottom: 2px solid #ddd;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd; 
+}
+
+
+tr:nth-child(even) {
+  background-color: #f9f9f9; 
+}
 
 
 @media (max-width: 540px) {

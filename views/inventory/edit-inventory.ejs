@@ -1,10 +1,10 @@
 <% if(title) { %>
-    <h1> <%= options.rows%></h1>
+    <h1> <%= title%></h1>
     <% } else {
         res.redirect('/')
     } %>
     <div class="form-container">
-        <form action="/inventory/addNewItem" method="post">
+        <form id="updateForm" action="/inventory/update" method="post">
             <div class="form-group">
                 <label for="classification_id">Classification:</label>
                 <select class="input" id="classification_id" name="classification_id" required>
@@ -64,10 +64,13 @@
                 title="This field is required" value="<%= locals.inv_color %>">
             </div>
             <div class="form-group">
-                <input type="submit" value="Add item">
+                <!-- <button type="submit" value="Edit item" disabled ></button> -->
+                <input id="btn" type="submit" name="submit" value="Edit item" disabled>
+                <input type="hidden" name="inv_id"<% if(locals.inv_id) {%> value="<%= locals.inv_id %>"<% } %>>
             </div>
         </form>
     </div>
+    <script src="../../js/inv-update.js"></script>
     <%- messages() %>
     <% if (errors) { %>
         <ul class="notice">

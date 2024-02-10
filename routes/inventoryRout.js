@@ -17,13 +17,15 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 router.get("/detail/:itemId", utilities.handleErrors(invController.buildByItemId));
 
 // Route to build management page
-router.get("/", utilities.handleErrors(invController.buildManagement))
+router.get("/", utilities.checkAdminAuthorization, utilities.handleErrors(invController.buildManagement))
 
 // Route to build add classification
 router.get("/addClassification", utilities.handleErrors(invController.buildNewClass))
 
 // Route to build add item
 router.get("/addNewItem", utilities.handleErrors(invController.buildNewItem))
+
+
 
 
 router.post('/addClassification',
@@ -37,3 +39,17 @@ router.post('/addClassification',
             invValidate.checkItemData, 
             utilities.handleErrors(invController.addItem)
             )
+
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEditItem))
+
+router.post("/update",
+            invValidate.itemRules(),
+            invValidate.checkUpdateData, 
+            utilities.handleErrors(invController.updateItem))
+
+
+router.get("/delete/:inventory_id", utilities.handleErrors(invController.buildDeleteView))
+
+router.post("/delete", utilities.handleErrors(invController.deleteItem))

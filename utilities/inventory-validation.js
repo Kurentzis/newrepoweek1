@@ -1,7 +1,7 @@
 const utilities = require(".")
 const {body, validationResult} = require("express-validator")
 const validate = {}
-const inventoryModel = require("../models/inventory-model")
+const invModel = require("../models/inventory-model")
 
 
 //Registratiuon Data Validation Rules
@@ -111,14 +111,11 @@ validate.itemRules = () => {
  * ***************************** */
 
 validate.checkItemData = async (req, res, next) => {
-  debugger
   const { classification_id,  inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color } = req.body
   let errors = []
   let select = await utilities.getClassificationSelect()
   let options = await utilities.getClasses()
   errors = validationResult(req)
-  // console.log(req)
-  console.log(res)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
     res.render("inventory/addNewItem", {
@@ -137,6 +134,45 @@ validate.checkItemData = async (req, res, next) => {
       inv_year, 
       inv_miles, 
       inv_color
+    })
+    return
+  }
+  next()
+}
+
+
+ /* ******************************
+ * Check data and return errors or continue to Update
+ * ***************************** */
+
+ validate.checkUpdateData = async (req, res, next) => {
+  const { classification_id,  inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color, inv_id } = req.body
+  let errors = []
+  let select = await utilities.getClassificationSelect()
+  let options = await utilities.getClasses()
+  errors = validationResult(req)
+  let itemName = `${inv_make} ${inv_model}`
+  console.log(req.body)
+ 
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render("inventory/edit-inventory", {
+      title: `Edit ${itemName}`,
+      errors,
+      nav,
+      select,
+      options,
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail, 
+      inv_price, 
+      inv_year, 
+      inv_miles, 
+      inv_color,
+      inv_id
     })
     return
   }

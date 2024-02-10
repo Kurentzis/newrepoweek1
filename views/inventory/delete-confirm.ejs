@@ -1,0 +1,44 @@
+<% if(title) { %>
+    <h1> <%= title%></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+    <div class="form-container">
+        <form id="deleteForm" action="/inventory/delete" method="post">
+            <h2>Confirm deletion - The delete is permanent!</h2>
+            <div class="form-group">
+                <label for="inv_make">Make:</label>
+                <input class="input" type="text" id="inv_make" name="inv_make" required minlength="3" readonly
+                title="Min of 3 characters" placeholder="Min of 3 characters" value="<%= locals.inv_make %>">
+            </div>
+            <div class="form-group">
+                <label for="inv_model">Model:</label>
+                <input class="input" type="text" id="inv_model" name="inv_model" required minlength="3" readonly
+                title="Min of 3 characters" placeholder="Min of 3 characters" value="<%= locals.inv_model %>">
+            </div>
+            <div class="form-group">
+                <label for="inv_price">Price:</label>
+                <input class="input" type="text" id="inv_price" name="inv_price" required pattern="^\d*\.?\d*$" readonly
+                title="Decimal or integer" placeholder="Decimal or integer" value="<%= locals.inv_price %>">
+            </div>
+            <div class="form-group">
+                <label for="inv_year">Year:</label>
+                <input class="input" type="text" id="inv_year" name="inv_year" required pattern="[0-9]{4,4}" readonly
+                title="4-digit year" placeholder="4-digit year" value="<%= locals.inv_year %>">
+            </div>
+            <div class="form-group">
+                <input id="btn" type="submit" name="submit" value="Delete item">
+                <input type="hidden" name="inv_id"<% if(locals.inv_id) {%> value="<%= locals.inv_id %>"<% } %>>
+            </div>
+        </form>
+    </div>
+
+    <%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+       <% errors.array().forEach(error => { %>
+         <li><%= error.msg %></li>
+      <%  }) %>
+       </ul>
+      <% } %>
+

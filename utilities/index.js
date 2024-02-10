@@ -1,6 +1,7 @@
 const invModel = require("../models/inventory-model")
 const Util = {}
-
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 /* ************************
  * Constructs the nav HTML unordered list
  ************************** */
@@ -83,7 +84,7 @@ Util.buildItemGrid = async function(data){
     else {
         grid = '<p class="notice">Sorry, no matching vehicle could be found.</p>'
     }
-    console.log(grid)
+    // console.log(grid)
     return grid
 }
 
@@ -150,7 +151,7 @@ Util.buildRegisterGrid = async function() {
 
 Util.buildManagementView = async function() {
     let grid
-    console.log("utils")
+    // console.log("utils")
     grid = `<ul>
                 <li><a href="/inv/add-classification/">Add a new classification</a></li>
                 <li><a href="/newClassItem">Add new Item</a></li>
@@ -175,9 +176,9 @@ Util.getClassificationSelect = async function() {
 }
 
 Util.getClasses = async function() {
-    let data = await invModel.getClassifications()
+    let data = await invModel.getClassifications ()
 
-    return data
+    return data.rows
 }
 /* ****************************************
  * Middleware For Handling Errors
@@ -186,5 +187,102 @@ Util.getClasses = async function() {
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
+
+
+/********************************************
+ * Middleware to check token validity
+******************************************* */
+
+Util.checkJWTToken = (req, res, next) => {
+    if (req.cookies.jwt) {
+        jwt.verify(
+            req.cookies.jwt,
+            process.env.ACCESS_TOKEN_SECRET,
+            function (err, accountData) {
+                if(err) {
+                    req.flash("Please log in")
+                    res.clearCookie("jwt")
+                    res.locals.loggedIn = 0; 
+                    return res.redirect("/account/login")
+                }
+                res.locals.accountData = accountData
+                res.locals.userName = accountData.account_firstname
+                res.locals.loggedIn = 1
+                next()
+            })
+    } else {
+        res.locals.loggedIn = 0; 
+        next()
+    }
+}
+
+/*******************************************************
+ * Check Authority
+ *******************************************************/
+Util.checkAdminAuthorization = (req, res, next) => {
+    if (req.cookies.jwt) {
+        jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, function (err, accountData) {
+            if (err) {
+                console.log(err)
+            } else {
+                if (accountData.account_type === 'Admin') {
+                    next(); 
+                } else {
+                    req.flash("notice", "Please log in as admin");
+                    res.clearCookie("jwt");
+                    res.locals.loggedIn = 0;
+                    return res.redirect("/account/login");
+                }
+            }
+        });
+    } 
+    else {
+        req.flash("notice", "Please log in as admin");
+        res.clearCookie("jwt");
+        res.locals.loggedIn = 0;
+        return res.redirect("/account/login");
+    }
+
+}
+
+
+/*******************************************************
+ * Check Login
+ *******************************************************/
+Util.checkLogin = (req, res, next) => {
+    if(res.locals.loggedIn) {
+        next()
+    } else {
+        req.flash("Please log in")
+        return res.redirect("/account/login")
+    }
+}
+
+
+Util.checkAdminAuthorization = (req, res, next) => {
+    if (req.cookies.jwt) {
+        jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, function (err, accountData) {
+            if (err) {
+                console.log(err)
+            } else {
+                if (accountData.account_type === 'Admin') {
+                    next(); 
+                } else {
+                    req.flash("notice", "Please log in as admin");
+                    res.clearCookie("jwt");
+                    res.locals.loggedIn = 0;
+                    return res.redirect("/account/login");
+                }
+            }
+        });
+    } 
+    else {
+        req.flash("notice", "Please log in as admin");
+        res.clearCookie("jwt");
+        res.locals.loggedIn = 0;
+        return res.redirect("/account/login");
+    }
+
+}
 
 module.exports = Util

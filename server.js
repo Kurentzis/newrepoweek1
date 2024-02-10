@@ -19,6 +19,8 @@ const session = require("express-session")
 const pool = require("./database/")
 const bodyParser = require("body-parser")
 
+const cookieParser = require("cookie-parser")
+
 /* ***********************
  * Middleware
  * ************************/
@@ -43,6 +45,8 @@ app.use(function(req, res, next){
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
 /* ***********************
  * View Engine and Templates
  *************************/
@@ -61,6 +65,9 @@ app.use(static)
 // app.get("/", function(req, res) {
 //   res.render('index', {title: "Home"})
 // })
+
+
+
 app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inventory", utilities.handleErrors(inventoryRoute))
 app.use("/account", utilities.handleErrors(accountRoute))
@@ -73,6 +80,8 @@ app.use(async (req, res, next) => {
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
+
+
 
 /* ***********************
 * Express Error Handler
