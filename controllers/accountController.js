@@ -126,7 +126,7 @@ async function updatePassword(req, res) {
     } catch (error){
         req.flash("notice", "Sorry, there was an error updating your password.")
         res.status(500).render ("account/editAccount", {
-            title:  `Edit ${account_firstname} ${account_lastname}`,
+            title:  `Edit ${accountName} ${account_lastname}`,
             nav,
             errors: null,
             account_firstname: accountName,
@@ -152,7 +152,7 @@ async function updatePassword(req, res) {
     } else {
         req.flash("notice", "Sorry, update failed.")
         res.status(501).render("account/editAccount", {
-            title: `Edit ${account_firstname} ${account_lastname}`,
+            title: `Edit ${accountName} ${account_lastname}`,
             nav, 
             accountName,
             accountType,
@@ -170,6 +170,7 @@ async function accountLogin(req, res) {
     const {account_email, account_password} = req.body
     // console.log(account_email, account_password)
     const accountData = await accountModel.getAccountByEmail(account_email)
+    let form = await utilities.buildLoginGrid()
     // console.log(accountData)
     if(!accountData) {
         req.flash("notice", "Please check your credentials and try again.")
@@ -177,7 +178,8 @@ async function accountLogin(req, res) {
             title: "Login",
             nav,
             errors: null,
-            account_email
+            account_email,
+            form
         })
         return
     }
@@ -256,4 +258,55 @@ async function buildEditAccount(req, res, next) {
       account_id
     })
 }
-module.exports = {buildLogin, buildRegistration, registerAccount, accountLogin, buildLoggedIn, logOut, buildAccountManageView, buildEditAccount, updateAccount, updatePassword}
+
+async function deleteAccount(req, res, next) {
+    let account_id = parseInt(req.params.id)
+    let account_info = await accountModel.getAccountById(account_id)
+    let nav = await utilities.getNav()
+    let accountName = `${account_info.account_firstname} ${account_info.account_lastname}`
+    console.log('deleteConfirm', accountName)
+    res.render("account/deleteAccountConfirm", { 
+        title: `Delete ${accountName} account`,
+        nav,
+        errors: null,
+        account_firstname: account_info.account_firstname,
+        account_lastname: account_info.account_lastname,
+        account_email: account_info.account_email,
+        account_id
+      })
+}
+
+
+async function deleteAccountSubmit(req, res, next) {
+    let account_id = parseInt(req.body.account_id)
+    let account_info = await accountModel.getAccountById(account_id)
+    let nav = await utilities.getNav()
+    let result = await accountModel.deleteAccountById(account_id)
+    let form = await utilities.buildLoginGrid()
+
+    if(result) {
+        req.flash("notice", "Account deleted!");
+        res.clearCookie("jwt");
+        res.locals.loggedIn = 0;
+        return res.redirect("/account/login");
+
+        res.render("account/login", {
+            title: "Home",
+            errors: null,
+            nav,
+        })
+
+    } else {
+        res.render("account/deleteAccountConfirm", {
+            title: "Delete",
+            errors: null,
+            nav,
+            account_firstname: account_info.account_firstname,
+            account_lastname: account_info.account_lastname,
+            account_email: account_info.account_email,
+            account_id
+        })
+    }
+}
+module.exports = {buildLogin, buildRegistration, registerAccount, accountLogin, buildLoggedIn, logOut, 
+    buildAccountManageView, buildEditAccount, updateAccount, updatePassword, deleteAccount, deleteAccountSubmit}

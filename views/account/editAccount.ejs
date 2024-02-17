@@ -4,6 +4,7 @@
         res.redirect('/')
     } %>
 
+<div id="form_holder_account">
     <div class="form-container">
         <form action="/account/update_account" method="post">
             <div class="form-group">
@@ -21,6 +22,7 @@
             
             <div class="form-group">
                 <input type="submit" value="Update account info">
+                 <a href="/account/delete/<%= account_id %>"><input type="button" id="deleteAcBtn" value="DELETE ACCOUNT"></a>
                 <input type="hidden" id="account_id" name="account_id" value="<%= account_id %>">
             </div>
         </form>
@@ -43,8 +45,10 @@
             </div>
             <span id='shwPrdBtn' onclick="shwPass(this)">Show password</span>
         </form>
+        
     </div>
-
+   
+</div>
     <%- messages() %>
     <% if (errors) { %>
         <ul class="notice">

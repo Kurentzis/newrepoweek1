@@ -51,3 +51,7 @@ router.post("/update_password",
             regValidate.checkUpdatePassword, 
             utilities.handleErrors(accountController.updatePassword)
 )
+
+
+router.get('/delete/:id', utilities.handleErrors(accountController.deleteAccount))
+router.post('/delete', utilities.handleErrors(accountController.deleteAccountSubmit))
