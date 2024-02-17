@@ -390,6 +390,8 @@ input[type="submit"]:hover {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  display: block;
+  text-align: center;
 }
 
 @media (max-width: 724px) {
