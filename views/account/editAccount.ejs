@@ -22,7 +22,7 @@
             
             <div class="form-group">
                 <input type="submit" value="Update account info">
-                 <a href="/account/delete/<%= account_id %>"><input type="button" id="deleteAcBtn" value="DELETE ACCOUNT"></a>
+                <a id="deleteAcBtn" href="/account/delete/<%= account_id %>">DELETE ACCOUNT</a> <!--<input type="button" id="deleteAcBtn" value="DELETE ACCOUNT"> -->
                 <input type="hidden" id="account_id" name="account_id" value="<%= account_id %>">
             </div>
         </form>
