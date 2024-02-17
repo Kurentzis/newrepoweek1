@@ -1,0 +1,24 @@
+<% if(title) { %>
+    <h1><%= title%></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+
+    <ul>
+        <li><a href="/inventory/addClassification">Add a new classification</a></li>
+        <li><a href="/inventory/addNewItem">Add new Item</a></li>
+    </ul>
+    <h2>Manage Inventory</h2>
+    <select id="classificationList"> 
+        <option value="" selected>Choose a Classification</option>
+        <% classificationSelect.forEach(option => { %> 
+                <option value="<%= option.classification_id %>"><%= option.classification_name %></option>
+ 
+        <% }) %></select>
+    
+    <table id="inventoryDisplay"></table>
+    <noscript>JavaScript must be enabled to use this page.</noscript>
+
+    <script src="../../js/inventory.js"></script>
+    <%#- grid %>
+    <%- messages() %>

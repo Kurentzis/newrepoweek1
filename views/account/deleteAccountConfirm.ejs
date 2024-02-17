@@ -1,0 +1,38 @@
+<% if(title) { %>
+    <h1> <%= title%></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+    <div class="form-container">
+        
+        <form action="/account/delete" method="post">
+            <h2>Confirm deletion - The delete is permanent!</h2>
+            <div class="form-group">
+                <label for="account_firstname">First name:</label>
+                <input type="text" id="account_firstname" name="account_firstname" required readonly value="<%= locals.account_firstname %>">
+            </div>
+            <div class="form-group">
+                <label for="account_lastname">Last name:</label>
+                <input type="text" id="account_lastname" name="account_lastname" required readonly value="<%= locals.account_lastname %>">
+            </div>
+            <div class="form-group">
+                <label for="account_email">Email:</label>
+                <input type="email" id="account_email" name="account_email" required readonly value="<%= locals.account_email %>">
+            </div>
+            
+            <div class="form-group">
+                <input id="deleteAcBtn" type="submit" value="Delete account">
+                <input type="hidden" id="account_id" name="account_id" value="<%= account_id %>">
+            </div>
+        </form>
+    </div>
+
+    <%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+       <% errors.array().forEach(error => { %>
+         <li><%= error.msg %></li>
+      <%  }) %>
+       </ul>
+      <% } %>
+

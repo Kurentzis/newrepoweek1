@@ -1,0 +1,29 @@
+<% if(title) { %>
+    <h1> <%= title%></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+    <div class="form-container">
+        <form action="/inventory/addClassification" method="post">
+            <div class="form-group">
+                <label for="classification_name">Catalog name:</label>
+                <input type="text" id="classification_name" name="classification_name" required pattern="^[a-zA-Z]+$" value="<%= locals.classification_name %>"
+                title="Spaces and special symbols are not allowed">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register">
+            </div>
+        </form>
+    </div>
+    <%#- form %>
+    <%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+       <% errors.array().forEach(error => { %>
+         <li><%= error.msg %></li>
+      <%  }) %>
+       </ul>
+      <% } %>
+
+
+      <!-- value="<%# locals.classification_name %>" -->
